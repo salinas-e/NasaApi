@@ -1,5 +1,6 @@
 const express = require('express');
 const fetch = require('node-fetch');
+const { url } = require('inspector');
 
 const router = express.Router();
 
@@ -9,47 +10,33 @@ router.get('/', (req, res) => {
 	res.render('index');
 });
 
+const DIM = 0.251;
+
+const buildUrl = (longitude, latitude) => {
+	return (
+		nasaApi +
+		`lon=${longitude.toFixed(3)}&lat=${latitude.toFixed(3)}&api_key=${process.env.NASA_API_KEY}&dim=${DIM}`
+	);
+};
+
+const getUrl = (latitude, longitude) => {
+	let urls = [];
+	for (let r = 1; r >= -1; r--) {
+		for (let c = -1; c <= 1; c++) {
+			urls.push(buildUrl(longitude + c * DIM, latitude + r * DIM));
+		}
+	}
+
+	return urls;
+};
+
 router.get('/render', (req, res) => {
 	const coord = req.query.coord.split(',');
 
-	const longitude = parseFloat(coord[1]);
 	const latitude = parseFloat(coord[0]);
+	const longitude = parseFloat(coord[1]);
 
-	const dim = 0.25;
-
-	const nasaApiMainUrl = nasaApi + `lon=${longitude}&lat=${latitude}&api_key=${process.env.NASA_API_KEY}&dim=${dim}`;
-	const nasaApiUpUrl =
-		nasaApi + `lon=${longitude}&lat=${latitude + dim}&api_key=${process.env.NASA_API_KEY}&dim=${dim}`;
-	const nasaApiDownUrl =
-		nasaApi + `lon=${longitude}&lat=${latitude - dim}&api_key=${process.env.NASA_API_KEY}&dim=${dim}`;
-	const nasaApiLeftUrl =
-		nasaApi + `lon=${longitude - dim}&lat=${latitude}&api_key=${process.env.NASA_API_KEY}&dim=${dim}`;
-	const nasaApiRightUrl =
-		nasaApi + `lon=${longitude - dim}&lat=${latitude}&api_key=${process.env.NASA_API_KEY}&dim=${dim}`;
-	const nasaApiUpLeftUrl =
-		nasaApi + `lon=${longitude - dim}&lat=${latitude + dim}&api_key=${process.env.NASA_API_KEY}&dim=${dim}`;
-	const nasaApiUpRightUrl =
-		nasaApi + `lon=${longitude + dim}&lat=${latitude + dim}&api_key=${process.env.NASA_API_KEY}&dim=${dim}`;
-	const nasaApiDownLeftUrl =
-		nasaApi + `lon=${longitude - dim}&lat=${latitude - dim}&api_key=${process.env.NASA_API_KEY}&dim=${dim}`;
-	const nasaApiDownRightUrl =
-		nasaApi + `lon=${longitude + dim}&lat=${latitude - dim}&api_key=${process.env.NASA_API_KEY}&dim=${dim}`;
-
-	let nasaUrls = [];
-
-	nasaUrls.push(nasaApiUpLeftUrl);
-	nasaUrls.push(nasaApiUpUrl);
-	nasaUrls.push(nasaApiUpRightUrl);
-
-	nasaUrls.push(nasaApiLeftUrl);
-	nasaUrls.push(nasaApiMainUrl);
-	nasaUrls.push(nasaApiRightUrl);
-
-	nasaUrls.push(nasaApiDownLeftUrl);
-	nasaUrls.push(nasaApiDownUrl);
-	nasaUrls.push(nasaApiDownRightUrl);
-
-	res.render('earth', { nasaUrls: nasaUrls });
+	res.render('earth', { nasaUrls: getUrl(latitude, longitude) });
 });
 
 module.exports = router;
