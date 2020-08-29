@@ -1,8 +1,11 @@
 html
     head
-        title NASA Images
+        link(rel='stylesheet', href='/css/bootstrap.min.css')
+        link(rel='stylesheet', href='/css/styles.css')
 body
-    h1 Enter coordinates
-    form(method="get" action="/render")
-        input(type="text" name="coord" placeholder="type coordinates")
-        input(type="submit", value="render")
+    div.center
+        form(method="get" action="/render" class= "col-lg-6 offset-lg-3")
+            input(type="text" name="coord" placeholder="type coordinates")
+            input(type="submit", value="render")
+            if error
+                p.error=error

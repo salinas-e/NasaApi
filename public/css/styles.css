@@ -1,8 +1,29 @@
 img {
-	width: 100px;
-	height: 100px;
+	width: 200px;
+	height: 200px;
 }
 
 .cell {
 	padding: 0px;
+}
+
+.container {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 600px;
+	height: 600px;
+	margin-left: -300px;
+	margin-top: -300px;
+}
+
+.center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 200px;
+}
+
+.error {
+	color: red;
 }
