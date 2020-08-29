@@ -1,8 +1,28 @@
 html
   head
-    Nasa API - Earth
+    link(rel='stylesheet', href='/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/css/styles.css')
   body
-    div
-        each imageUrl in nasaUrls
-            div
-                img(src=imageUrl)
+    div.row
+        div.col-md-auto.cell
+            img(src=nasaUrls[0])
+        div.col-md-auto.cell
+            img(src=nasaUrls[1])
+        div.col-md-auto.cell
+            img(src=nasaUrls[2])
+
+    div.row
+        div.col-md-auto.cell
+            img(src=nasaUrls[3])
+        div.col-md-auto.cell
+            img(src=nasaUrls[4])
+        div.col-md-auto.cell
+            img(src=nasaUrls[5])
+
+    div.row
+        div.col-md-auto.cell
+            img(src=nasaUrls[6])
+        div.col-md-auto.cell
+            img(src=nasaUrls[7])
+        div.col-md-auto.cell
+            img(src=nasaUrls[8])

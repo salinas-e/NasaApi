@@ -10,6 +10,8 @@ const apiGetRoute = require('./routes/api');
 app.set('view engine', 'pug');
 app.set('views', './views');
 
+app.use(express.static('public'));
+
 app.use(bodyParser.json());
 app.use('/', apiGetRoute);
 
