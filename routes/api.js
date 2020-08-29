@@ -2,20 +2,20 @@ const express = require('express');
 const fetch = require('node-fetch');
 const { url } = require('inspector');
 
-const router = express.Router();
+const DIM = 0.251;
+const NASA_API = `https://api.nasa.gov/planetary/earth/imagery?date=2020-08-15&`;
 
-const nasaApi = `https://api.nasa.gov/planetary/earth/imagery?date=2020-08-15&`;
+const router = express.Router();
 
 router.get('/', (req, res) => {
 	res.render('index');
 });
 
-const DIM = 0.251;
-
 const buildUrl = (longitude, latitude) => {
 	return (
-		nasaApi +
-		`lon=${longitude.toFixed(3)}&lat=${latitude.toFixed(3)}&api_key=${process.env.NASA_API_KEY}&dim=${DIM}`
+		NASA_API +
+		`lon=${longitude.toFixed(3)}&lat=${latitude.toFixed(3)}&api_key=${process.env.NASA_API_KEY ||
+			'DEMO_KEY'}&dim=${DIM}`
 	);
 };
 
